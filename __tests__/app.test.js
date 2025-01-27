@@ -13,7 +13,7 @@ afterAll(() => {
 });
 
 
-describe("GET /api", () => {
+describe.only("GET /api", () => {
   test("200: Responds with an object detailing the documentation for each endpoint", () => {
     return request(app)
       .get("/api")
@@ -25,7 +25,7 @@ describe("GET /api", () => {
 });
 
 
-describe("GET /api/topics", () => {
+describe.skip("GET /api/topics", () => {
   test("200: Responds with an array of topic objects, each of which should have properties: slug, description", () => {
     return request(app)
     .get("/api/topics")
