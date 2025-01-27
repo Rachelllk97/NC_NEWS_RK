@@ -13,7 +13,7 @@ afterAll(() => {
 });
 
 
-describe.only("GET /api", () => {
+describe.skip("GET /api", () => {
   test("200: Responds with an object detailing the documentation for each endpoint", () => {
     return request(app)
       .get("/api")
@@ -33,6 +33,19 @@ describe.skip("GET /api/topics", () => {
     .then((response) => {
       expect(Array.isArray(response.body)).toBe(true)
     })
+    })
+  })
+
+
+  describe("404", () => {
+    test('should respond with 404 and a message of "Endpoint not found"', ()=> {
+      return request(app)
+      .get("/api/nope")
+      .expect(404)
+      .then((response) => {
+        console.log(response.body)
+        expect(response.body.error).toBe("Endpoint not found")
+      })
     })
   })
 

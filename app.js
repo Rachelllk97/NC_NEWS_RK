@@ -13,7 +13,9 @@ app.get("/api", (req, res) => {
 //     res.status()
 // })
 
-
+app.all("*", (req, res) => {
+    res.status(404).send({error: "Endpoint not found"})
+})
 
 
 module.exports = app
