@@ -9,9 +9,7 @@ app.get("/api", (req, res) => {
 
 // To use later: 
 
-// app.get("/api/topics", (req, res) => {
-//     res.status()
-// })
+app.get("/api/topics", getTopics);
 
 app.all("*", (req, res) => {
     res.status(404).send({error: "Endpoint not found"})
