@@ -1,22 +1,13 @@
 const db = require("../db/connection")
 
 
-const fetchTopics = (queries) => {
-    const description = queries.description;
-    const slug = queries.slug;
-
-    let SQLString = `SELECT * FROM topics`
-    const args = []
-
-    return db.query(SQLString, args)
+const fetchTopics = () => {
+    return db.query(`SELECT * FROM topics`)
     .then(({ rows}) => {
-        console.log(rows, "<<<< rows in fetchTopics, line 12");
         return rows 
     })
-    .catch((err) => {
-        console.error("Error fetching topics:", err);
-        throw err;
-    });
 }
+
+//i'll need a check to make sure ive got the rows, if statement for if rows are 0, promise.reject()
 
 module.exports = fetchTopics

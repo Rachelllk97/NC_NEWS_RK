@@ -36,9 +36,9 @@ describe("GET /api/topics", () => {
       return request(app)
       .get("/api/topics")
       .expect(200)
-      .then((response) => {
-        expect(response.body.topics.length).toBe(3)
-        response.body.topics.forEach((topic) => {
+      .then(({ body: { topics } }) =>{
+        expect(topics.length).toBe(3)
+        topics.forEach((topic) => {
           expect(topic).toMatchObject({
             slug: expect.any(String),
             description: expect.any(String),    
@@ -51,7 +51,7 @@ describe("GET /api/topics", () => {
 describe.skip("GET /api/articles/:article_id", () => {
     test("200: get an article by its id with correct properties", () => {
       return request(app)
-      .get("/api/articles/$1")
+      .get("/api/articles/:article_id")
       .then((response) => {
       const article = response.body.article
         expect(article).toMatchObject({
@@ -80,7 +80,7 @@ describe.skip("GET /api/articles/:article_id", () => {
         })
       })
     })
-      test("400 id not a number", () => {
+      test("400: id not a number", () => {
         return request(app)
           .get("/api/articles/hello")
           .expect(400)
@@ -88,21 +88,16 @@ describe.skip("GET /api/articles/:article_id", () => {
             expect(response.body.error).toBe("Bad Request");
           });
       });
+      test("404: no article with that id number", () => {
+        return request(app)
+        .get("/api/articles/20")
+        .expect(404)
+        .then((response) => {
+          expect(response.body.error).toBe("No article associated with this id number");
+        })
+      })
+
   });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   describe("404", () => {
     test('should respond with 404 and a message of "Endpoint not found"', ()=> {
