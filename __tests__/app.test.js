@@ -80,7 +80,16 @@ describe.skip("GET /api/articles/:article_id", () => {
         })
       })
     })
-})
+      test("400 id not a number", () => {
+        return request(app)
+          .get("/api/articles/hello")
+          .expect(400)
+          .then((response) => {
+            expect(response.body.error).toBe("Bad Request");
+          });
+      });
+  });
+
 
 
 
