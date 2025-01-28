@@ -48,6 +48,37 @@ describe("GET /api/topics", () => {
   })
 })
 
+describe("GET /api/articles/:article_id", () => {
+    test("200: get an article by its id with correct properties", () => {
+      return request(app)
+      .get("/api/articles/1")
+      .then((response) => {
+      const article = response.body.article
+        expect(article).toMatchObject({
+          title: expect.any(String),
+          topic: expect.any(String),
+          author: expect.any(String),
+          body: expect.any(String),
+          created_at: expect.any(Number),
+          article_img_url: expect.any(String),
+        })
+      })
+  })
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   describe("404", () => {
     test('should respond with 404 and a message of "Endpoint not found"', ()=> {
       return request(app)
