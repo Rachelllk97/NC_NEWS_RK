@@ -48,18 +48,18 @@ describe("GET /api/topics", () => {
   })
 })
 
-describe.skip("GET /api/articles/:article_id", () => {
+describe("GET /api/articles/:article_id", () => {
     test("200: get an article by its id with correct properties", () => {
       return request(app)
-      .get("/api/articles/:article_id")
-      .then((response) => {
-      const article = response.body.article
+      .get("/api/articles/4")
+      .then(({body}) => {
+      const article = body.article
         expect(article).toMatchObject({
           title: expect.any(String),
           topic: expect.any(String),
           author: expect.any(String),
           body: expect.any(String),
-          created_at: expect.any(Number),
+          created_at: expect.any(String),
           article_img_url: expect.any(String),
         })
       })
@@ -67,14 +67,17 @@ describe.skip("GET /api/articles/:article_id", () => {
     test("get correct article for given article_id", () => {
       return request(app)
       .get("/api/articles/3")
-      .then((response) => {
-        const article = response.body.article
+      .expect(200)
+      .then(({body}) => {
+        const article = body.article
         expect(article).toEqual({
+          article_id: 3,
           title: "Eight pug gifs that remind me of mitch",
           topic: "mitch",
           author: "icellusedkars",
           body: "some gifs",
-          created_at: 1604394720000,
+          created_at: expect.any(String),
+          votes: 0,
           article_img_url:
             "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
         })

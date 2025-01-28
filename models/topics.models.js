@@ -9,7 +9,21 @@ const fetchTopics = () => {
 }
 
 
+const fetchArticleById = (article_id) => {
+    return db
+    .query('SELECT * FROM articles WHERE article_id = $1', [article_id])
+    .then(({rows}) => {
+        const article = rows[0]
+    if (!article) {
+        return Promise.reject({
+            status: 404,
+            msg: "No article associated with this id number",
+          })
+    }
+     return article
+    })
+}
 
-//i'll need a check to make sure ive got the rows, if statement for if rows are 0, promise.reject()
 
-module.exports = {fetchTopics}
+module.exports = {fetchTopics, fetchArticleById}
+
