@@ -307,32 +307,35 @@ describe("GET /api/articles/:article_id/comments", () => {
     })
   })
   })
-  // test("should return comments in date order with most recent first", () {
-  //   return request(app)
-  //   .get("/api/articles/3/comments")
-  //   .expect(200)
-  //   .then((comments) => {
-  //     expect(comments).toEqual([{
-  //       comment_id: 11,
-  //       body: 'Ambidextrous marsupial',
-  //       article_id: 3,
-  //       author: 'icellusedkars',
-  //       votes: 0,
-  //       created_at: expect.any(String),   
-  //     }, 
-  //     {
-  //     comment_id: 10,
-  //       body: 'git push origin master',
-  //       article_id: 3,
-  //       author: 'icellusedkars',
-  //       votes: 0,
-  //       created_at: expect.any(String),   
-  //     }
-  //   ])
-  // })
-  // })
-})
+  test("should return comments in date order with most recent first", () => {
+    return request(app)
+    .get("/api/articles/3/comments")
+    .expect(200)
+    .then(({body: comments}) => {
+      expect(comments).toEqual({
+        comments:[{
+        comment_id: 11,
+        body: 'Ambidextrous marsupial',
+        article_id: 3,
+        author: 'icellusedkars',
+        votes: 0,
+        created_at: expect.any(String),   
+      }, 
+      {
+      comment_id: 10,
+        body: 'git push origin master',
+        article_id: 3,
+        author: 'icellusedkars',
+        votes: 0,
+        created_at: expect.any(String),   
+      }
+    ]})
+  })
+  })
+  test("should throw correct error if invalid article_id input", () => {
 
-//test - they should ne in order with recent comments first, utils function?
-//test - if incorrect id 
-//tes - if no comments for that id 
+  })
+  test("should throw correct error if article_id does not exist", () => {
+
+  })
+})
