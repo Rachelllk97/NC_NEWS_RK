@@ -350,4 +350,24 @@ describe("GET /api/articles/:article_id/comments", () => {
   })
 })
 
+// describe("POST /api/articles/:article_id/comments", () => {
+//   test("should add a comment for an article and return the post", () => {
+//     const newComment = {
+//       body: "this is a comment",
+//       username: "rachel"
+//     }
+//       return request(app)
+//         .post('/api/articles/3/comments')
+//         .send(newComment)
+//         .expect(201)
+//         .then((response) => {
+//           expect(response.body.comment.comment_id).toBe('number');
+//           expect(response.body.comment.username).toBe("rachel");
+//           expect(response.body.comment.body).toBe("this is a comment");
+//         });
+//   })
+// })
+
+
+
 
