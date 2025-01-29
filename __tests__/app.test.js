@@ -350,4 +350,40 @@ describe("GET /api/articles/:article_id/comments", () => {
   })
 })
 
+describe("POST /api/articles/:article_id/comments", () => {
+  test("should add a comment for an article and return the post", () => {
+    const newComment = {
+      body: "this is a comment",
+      username: "butter_bridge"
+    }
+      return request(app)
+        .post('/api/articles/3/comments')
+        .send(newComment)
+        .expect(201)
+        .then((response) => {
+          expect(typeof response.body.comment.comment_id).toBe('number');
+          expect(response.body.comment.author).toBe("butter_bridge");
+          expect(response.body.comment.body).toBe("this is a comment");
+        });
+  })
+  test("should return correct error if article_id input is invalid", () => {
+    return request(app)
+    .post('/api/articles/hello/comments')
+    .expect(400)
+    .then((response) => {
+     expect(response.body.error).toBe("Bad Request");
+  })
+})
+test("should return correct error if user not in user table", () => {
+  // need help with this test, lots of attempts failed 
+})
+test("should return correct error if article_id not found", () => {
+  // need help with this test, lots of attempts failed 
+})
+})
+
+
+
+
+
 
