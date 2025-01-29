@@ -113,6 +113,7 @@ describe("GET /api/articles/:article_id", () => {
     })
   })
 
+  // I will need to add functionality to get these in ascending order 
 describe('GET /api/articles', () => {
   test('return an array of objects containing all articles', () => {
     return request(app)
@@ -134,5 +135,25 @@ describe('GET /api/articles', () => {
     })
   })
 })
+// I need to add functionality for comment_count in the model 
+test('return the correct total count of all the comments with this article_id.', () => {
+  return request(app)
+  .get("/api/article/1")
+  .expect(200)
+  .then(({body}) => {
+    const article = body.article
+    expect(article).toEqual({
+        title: "Living in the shadow of a great man",
+        topic: "mitch",
+        author: "butter_bridge",
+        // the body property will be removed by some functionality 
+        body: "I find this existence challenging",
+        comment_count: 11,
+        created_at: 1594329060000,
+        votes: 100,
+        article_img_url:
+          "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+      })
+    })
+  })
 })
-
