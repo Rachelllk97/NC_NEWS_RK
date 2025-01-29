@@ -35,10 +35,9 @@ const fetchComments = (article_id) => {
     if (rows.length === 0) {
         return Promise.reject({
             status: 404,
-            msg: "No comment associated with this id number",
+            msg: "No comments associated with this id number",
           })
     }
-    console.log(rows, "<<< inside the model")
      return rows
     })
 }

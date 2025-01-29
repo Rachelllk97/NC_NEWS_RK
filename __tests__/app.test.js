@@ -333,9 +333,21 @@ describe("GET /api/articles/:article_id/comments", () => {
   })
   })
   test("should throw correct error if invalid article_id input", () => {
-
+    return request(app)
+    .get("/api/articles/hello/comments")
+    .expect(400)
+    .then((response) => {
+     expect(response.body.error).toBe("Bad Request");
+        });
   })
   test("should throw correct error if article_id does not exist", () => {
-
+  return request(app)
+  .get("/api/articles/20/comments")
+  .expect(404)
+  .then((response) => {
+  expect(response.body.error).toBe("No comments associated with this id number");
+  })
   })
 })
+
+
