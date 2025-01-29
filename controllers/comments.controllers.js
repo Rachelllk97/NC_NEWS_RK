@@ -17,7 +17,6 @@ const postComment = (req,res,next) => {
 
     addComment(article_id, username, body)
     .then((comment) => {
-        console.log(comment, "<<< in the controller")
         res.status(201).send({comment})
     })
     .catch((err) => {

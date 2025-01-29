@@ -21,11 +21,9 @@ const addComment = (article_id, username, body) => {
         [body, username, article_id, 0, createdAtString]
     )
     .then(({rows}) => {
-        console.log(rows, "<<< in the model")
         return rows[0]
     })
 
-
-}
+      }
 
 module.exports = {fetchComments, addComment}

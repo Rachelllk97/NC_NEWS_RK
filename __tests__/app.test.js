@@ -366,10 +366,22 @@ describe("POST /api/articles/:article_id/comments", () => {
           expect(response.body.comment.body).toBe("this is a comment");
         });
   })
-  test("should return correct error if user not in user table", () => {})
-  test("should return correct error if article_id input is invalid", () => {})
-  test("should return correct error if article_id does not exist", () => {})
+  test("should return correct error if article_id input is invalid", () => {
+    return request(app)
+    .post('/api/articles/hello/comments')
+    .expect(400)
+    .then((response) => {
+     expect(response.body.error).toBe("Bad Request");
+  })
 })
+test("should return correct error if user not in user table", () => {
+  // need help with this test, lots of attempts failed 
+})
+test("should return correct error if article_id not found", () => {
+  // need help with this test, lots of attempts failed 
+})
+})
+
 
 
 
