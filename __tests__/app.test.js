@@ -6,10 +6,6 @@ const seed = require("../db/seeds/seed.js")
 const testData = require("../db/data/test-data/index.js")
 
 
-/* Set up your test imports here */
-
-/* Set up your beforeEach & afterAll functions here */
-
 beforeEach(() => {
   return seed(testData);
 });
@@ -290,3 +286,53 @@ test("should return the array of objects in descing order", () => {
 
 })
 })})})
+
+
+describe("GET /api/articles/:article_id/comments", () => {
+  test("should an array of comments for the given article_id and contain correct properties", () => {
+    return request(app)
+    .get("/api/articles/3/comments")
+    .expect(200)
+    .then(({ body: { comments } }) => {
+      expect(comments.length).toBe(2)
+       comments.forEach((comment) => {
+        expect(comment).toMatchObject({
+          comment_id: expect.any(Number),
+          votes: expect.any(Number), 
+          created_at: expect.any(String),
+          author: expect.any(String),
+          body: expect.any(String),   
+          article_id: expect.any(Number),  
+      })
+    })
+  })
+  })
+  // test("should return comments in date order with most recent first", () {
+  //   return request(app)
+  //   .get("/api/articles/3/comments")
+  //   .expect(200)
+  //   .then((comments) => {
+  //     expect(comments).toEqual([{
+  //       comment_id: 11,
+  //       body: 'Ambidextrous marsupial',
+  //       article_id: 3,
+  //       author: 'icellusedkars',
+  //       votes: 0,
+  //       created_at: expect.any(String),   
+  //     }, 
+  //     {
+  //     comment_id: 10,
+  //       body: 'git push origin master',
+  //       article_id: 3,
+  //       author: 'icellusedkars',
+  //       votes: 0,
+  //       created_at: expect.any(String),   
+  //     }
+  //   ])
+  // })
+  // })
+})
+
+//test - they should ne in order with recent comments first, utils function?
+//test - if incorrect id 
+//tes - if no comments for that id 
