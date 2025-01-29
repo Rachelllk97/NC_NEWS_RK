@@ -5,6 +5,9 @@ const {getTopics} = require("./controllers/topics.controllers")
 const {getArticleByID, getArticles} = require("./controllers/articles.controllers")
 const {getComments, postComment}  = require("./controllers/comments.controllers")
 
+app.use(express.json());
+
+
 app.get("/api", (req, res) => {
     res.status(200).send({ endpoints})
 });
