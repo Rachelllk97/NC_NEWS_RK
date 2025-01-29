@@ -1,4 +1,4 @@
-const {fetchArticleById, fetchArticles} = require("../models/articles.models")
+const {fetchArticleById, fetchArticles, fetchComments} = require("../models/articles.models")
 const { modifyArticles } = require("../utils")
 
 const getArticleByID = (req, res, next) => {
@@ -24,4 +24,15 @@ const getArticles = (req, res, next) => {
     })
 }
 
-module.exports = {getArticleByID, getArticles}
+const getComments = (req, res, next) => {
+    const {article_id} = req.params
+    fetchComments(article_id)
+    .then((comments) => {
+        res.status(200).send({comments})
+    })
+    .catch((err) => {
+        next(err)
+    })
+}
+
+module.exports = {getArticleByID, getArticles, getComments}
