@@ -113,9 +113,8 @@ describe("GET /api/articles/:article_id", () => {
     })
   })
 
-  // I will need to add functionality to get these in ascending order 
 describe('GET /api/articles', () => {
-  test('return an array of objects containing all articles', () => {
+  test('return an array of objects containing all articles with body removed', () => {
     return request(app)
     .get("/api/articles")
     .expect(200)
@@ -130,30 +129,164 @@ describe('GET /api/articles', () => {
           created_at: expect.any(String), 
           votes: expect.any(Number), 
           article_img_url: expect.any(String), 
-          // comment_count: expect.any(Number),
+          comment_count: expect.any(String),
       })
     })
   })
 })
-// I need to add functionality for comment_count in the model 
 test('return the correct total count of all the comments with this article_id.', () => {
   return request(app)
-  .get("/api/article/1")
+  .get("/api/articles")
   .expect(200)
   .then(({body}) => {
-    const article = body.article
+    const article = body.articles[0]
     expect(article).toEqual({
-        title: "Living in the shadow of a great man",
-        topic: "mitch",
-        author: "butter_bridge",
-        // the body property will be removed by some functionality 
-        body: "I find this existence challenging",
-        comment_count: 11,
-        created_at: 1594329060000,
-        votes: 100,
-        article_img_url:
-          "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
-      })
+        article_id: 3,
+        title: 'Eight pug gifs that remind me of mitch',
+        topic: 'mitch',
+        author: 'icellusedkars',
+        created_at: expect.any(String), 
+        votes: 0,
+        article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+        comment_count: '2'
     })
   })
 })
+test("should return the array of objects in descing order", () => {
+  return request(app)
+  .get("/api/articles")
+  .expect(200)
+  .then(({body}) => {
+    const article = body.articles[0]
+    expect(article).toEqual({
+        article_id: 3,
+        title: 'Eight pug gifs that remind me of mitch',
+        topic: 'mitch',
+        author: 'icellusedkars',
+        created_at: expect.any(String),
+        votes: 0,
+        article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+        comment_count: '2'
+      },
+      {
+        article_id: 6,
+        title: 'A',
+        topic: 'mitch',
+        author: 'icellusedkars',
+        created_at: expect.any(String),
+        votes: 0,
+        article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+        comment_count: '1'
+      },
+      {
+        article_id: 2,
+        title: 'Sony Vaio; or, The Laptop',
+        topic: 'mitch',
+        author: 'icellusedkars',
+        created_at: expect.any(String),
+        votes: 0,
+        article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+        comment_count: '0'
+      },
+      {
+        article_id: 12,
+        title: 'Moustache',
+        topic: 'mitch',
+        author: 'butter_bridge',
+        created_at: expect.any(String),
+        votes: 0,
+        article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+        comment_count: '0'
+      },
+      {
+        article_id: 13,
+        title: 'Another article about Mitch',
+        topic: 'mitch',
+        author: 'butter_bridge',
+        created_at: expect.any(String),
+        votes: 0,
+        article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+        comment_count: '0'
+      },
+      {
+        article_id: 5,
+        title: 'UNCOVERED: catspiracy to bring down democracy',
+        topic: 'cats',
+        author: 'rogersop',
+        created_at: expect.any(String),
+        votes: 0,
+        article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+        comment_count: '2'
+      },
+      {
+        article_id: 1,
+        title: 'Living in the shadow of a great man',
+        topic: 'mitch',
+        author: 'butter_bridge',
+        created_at: expect.any(String),
+        votes: 100,
+        article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+        comment_count: '11'
+      },
+      {
+        article_id: 9,
+        title: "They're not exactly dogs, are they?",
+        topic: 'mitch',
+        author: 'butter_bridge',
+        created_at: expect.any(String),
+        votes: 0,
+        article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+        comment_count: '2'
+      },
+      {
+        article_id: 10,
+        title: 'Seven inspirational thought leaders from Manchester UK',
+        topic: 'mitch',
+        author: 'rogersop',
+        created_at: expect.any(String),
+        votes: 0,
+        article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+        comment_count: '0'
+      },
+      {
+        article_id: 4,
+        title: 'Student SUES Mitch!',
+        topic: 'mitch',
+        author: 'rogersop',
+        created_at: expect.any(String),
+        votes: 0,
+        article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+        comment_count: '0'
+      },
+      {
+        article_id: 8,
+        title: 'Does Mitch predate civilisation?',
+        topic: 'mitch',
+        author: 'icellusedkars',
+        created_at: expect.any(String),
+        votes: 0,
+        article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+        comment_count: '0'
+      },
+      {
+        article_id: 11,
+        title: 'Am I a cat?',
+        topic: 'mitch',
+        author: 'icellusedkars',
+        created_at: expect.any(String),
+        votes: 0,
+        article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+        comment_count: '0'
+      },
+      {
+        article_id: 7,
+        title: 'Z',
+        topic: 'mitch',
+        author: 'icellusedkars',
+        created_at: expect.any(String),
+        votes: 0,
+        article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+        comment_count: '0'
+
+})
+})})})

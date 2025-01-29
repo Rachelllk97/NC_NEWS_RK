@@ -1,4 +1,5 @@
 const {fetchArticleById, fetchArticles} = require("../models/articles.models")
+const { modifyArticles } = require("../utils")
 
 const getArticleByID = (req, res, next) => {
     const {article_id} = req.params
@@ -15,7 +16,8 @@ const getArticleByID = (req, res, next) => {
 const getArticles = (req, res, next) => {
     fetchArticles()
     .then((articles) => {
-        res.status(200).send({articles})
+        const modifiedArticles = modifyArticles(articles)
+        res.status(200).send({articles: modifiedArticles})
     })
     .catch((err) => {
         next(err)
