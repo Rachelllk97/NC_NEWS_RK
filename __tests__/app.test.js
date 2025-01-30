@@ -289,7 +289,7 @@ test("should return the array of objects in descing order", () => {
 
 
 describe("GET /api/articles/:article_id/comments", () => {
-  test("should an array of comments for the given article_id and contain correct properties", () => {
+  test("should return an array of comments for the given article_id and contain correct properties", () => {
     return request(app)
     .get("/api/articles/3/comments")
     .expect(200)
@@ -348,9 +348,21 @@ describe("GET /api/articles/:article_id/comments", () => {
   expect(response.body.error).toBe("No comments associated with this id number");
   })
   })
-})
+
+  //this is the test i'm working on ************
+//   test("should return 200 when ID is valid but it has no comments", () => {
+//     return request(app)
+//     .get("/api/articles/4/comments")
+//     .expect(200)
+//     .then((response) => {
+//       //should return an empty array 
+//       expect(response.body.error).toBe("No comments associated with this id number")
+//     })
+//   })
+// })
 
 describe("POST /api/articles/:article_id/comments", () => {
+  //update this test to return the full body not individual elements 
   test("should add a comment for an article and return the post", () => {
     const newComment = {
       body: "this is a comment",
@@ -366,6 +378,7 @@ describe("POST /api/articles/:article_id/comments", () => {
           expect(response.body.comment.body).toBe("this is a comment");
         });
   })
+  //one more test needed here for an invalid article_id???? not sure what that means
   test("should return correct error if article_id input is invalid", () => {
     return request(app)
     .post('/api/articles/hello/comments')
@@ -382,6 +395,29 @@ test("should return correct error if article_id not found", () => {
 })
 })
 
+describe("PATCH /api/articles/:article_id", () => {
+  test("should update the votes property correctly when given a valid aticle_id", () => {
+    const newVote = { inc_votes: 1}
+    return request(app)
+    .put("/api/articles/1")
+    .send(newVote)
+    .expect(200)
+    .then(({body : article}) => {
+      expect(article).toEqual({  
+        article_id: 1,
+        title: "Living in the shadow of a great man",
+        topic: "mitch",
+        author: "butter_bridge",
+        body: "I find this existence challenging",
+        created_at: expect.any(String),
+        votes: 101,
+        article_img_url:
+          "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+      })
+    })
+  })
+})
+})
 
 
 
