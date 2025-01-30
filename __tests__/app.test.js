@@ -348,18 +348,16 @@ describe("GET /api/articles/:article_id/comments", () => {
   expect(response.body.error).toBe("No comments associated with this id number");
   })
   })
-
-  //this is the test i'm working on ************
-//   test("should return 200 when ID is valid but it has no comments", () => {
-//     return request(app)
-//     .get("/api/articles/4/comments")
-//     .expect(200)
-//     .then((response) => {
-//       //should return an empty array 
-//       expect(response.body.error).toBe("No comments associated with this id number")
-//     })
-//   })
-// })
+  test.only("should return 200 when ID is valid but it has no comments", () => {
+    return request(app)
+    .get("/api/articles/4/comments")
+    .expect(200)
+    .then(({body}) => {
+       const {comments} = body
+      expect(comments).toEqual([])
+    })
+  })
+})
 
 describe("POST /api/articles/:article_id/comments", () => {
   //update this test to return the full body not individual elements 
@@ -378,7 +376,6 @@ describe("POST /api/articles/:article_id/comments", () => {
           expect(response.body.comment.body).toBe("this is a comment");
         });
   })
-  //one more test needed here for an invalid article_id???? not sure what that means
   test("should return correct error if article_id input is invalid", () => {
     return request(app)
     .post('/api/articles/hello/comments')
@@ -388,10 +385,30 @@ describe("POST /api/articles/:article_id/comments", () => {
   })
 })
 test("should return correct error if user not in user table", () => {
-  // need help with this test, lots of attempts failed 
+  const newComment = {
+    body: "this is a comment",
+    username: "rachel"
+  }
+  return request(app)
+  .post('/api/articles/1/comments')
+  .send(newComment)
+  .expect(404)
+  .then((response) => {
+    expect(response.body.error).toBe("Not Found")
+  })
 })
 test("should return correct error if article_id not found", () => {
-  // need help with this test, lots of attempts failed 
+  const newComment = {
+    body: "this is a comment",
+    username: "butter_bridge"
+  }
+  return request(app)
+  .post('/api/articles/9000/comments')
+  .send(newComment)
+  .expect(404)
+  .then((response) => {
+    expect(response.body.error).toBe("Not Found")
+  })
 })
 })
 
@@ -419,7 +436,7 @@ describe("PATCH /api/articles/:article_id", () => {
 })
 test("should return correct error if article_id does not exist", () => {})
 test("should return correct error if invalid input entered for article_id", ()=> {})
-})
+
 
 describe("DELETE /api/comments/:comment_id", () => {
   test("delete the given comment by comment_id", () => {
@@ -434,7 +451,8 @@ describe("DELETE /api/comments/:comment_id", () => {
   test("should return correct error if comment_id input is invalid", () => {})
 })
 
-//Does this one need anymore tests?
+
+//ADD THIS TO ENDPOINTS FILE
 describe("CORE /api/users", () => {
   test("should return an array of user objects with the correct properties", () => {
     return request(app)
@@ -452,4 +470,9 @@ describe("CORE /api/users", () => {
   })
 })
 
+// describe("GET /api/articles (sorting queries)", () =>{
+//   test("should return articles in desc order by default", () => {
+//     return
+//   })
+// })
 
