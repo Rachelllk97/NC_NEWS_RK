@@ -348,7 +348,7 @@ describe("GET /api/articles/:article_id/comments", () => {
   expect(response.body.error).toBe("No comments associated with this id number");
   })
   })
-  test.only("should return 200 when ID is valid but it has no comments", () => {
+  test("should return 200 when ID is valid but it has no comments", () => {
     return request(app)
     .get("/api/articles/4/comments")
     .expect(200)
@@ -360,8 +360,8 @@ describe("GET /api/articles/:article_id/comments", () => {
 })
 
 describe("POST /api/articles/:article_id/comments", () => {
-  //update this test to return the full body not individual elements 
-  test("should add a comment for an article and return the post", () => {
+  //updated
+  test.only("should add a comment for an article and return the post", () => {
     const newComment = {
       body: "this is a comment",
       username: "butter_bridge"
@@ -371,9 +371,14 @@ describe("POST /api/articles/:article_id/comments", () => {
         .send(newComment)
         .expect(201)
         .then((response) => {
-          expect(typeof response.body.comment.comment_id).toBe('number');
-          expect(response.body.comment.author).toBe("butter_bridge");
-          expect(response.body.comment.body).toBe("this is a comment");
+          expect(response.body.comment).toEqual( {
+            comment_id: 19,
+            body: 'this is a comment',
+            article_id: 3,
+            author: 'butter_bridge',
+            votes: 0,
+            created_at:  expect.any(String),   
+          });
         });
   })
   test("should return correct error if article_id input is invalid", () => {
