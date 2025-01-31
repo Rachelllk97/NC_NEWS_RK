@@ -90,7 +90,23 @@
           "votes": 0,
           "created_at": "2025-01-29T16:48:45.986Z"
         }]
-    } }}
+    }},
+    "GET /api/users": {
+      "description": "should return an array of user objects with the correct properties",
+      "queries": [],
+      "exampleResponse": {
+      "comment":[{
+        "username": "butter_bridge",
+        "name": "jonny",
+        "avatar_url":
+          "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg"
+      }]
+      }
+    }
+  
+  
+  
+  }
 
 
 
