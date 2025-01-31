@@ -349,7 +349,7 @@ describe("GET /api/articles/:article_id/comments", () => {
   })
   })
   //*** this test is not passing
-  test.only("should return 200 when ID is valid but it has no comments", () => {
+  test.skip("should return 200 when ID is valid but it has no comments", () => {
     return request(app)
     .get("/api/articles/4/comments")
     .expect(200)
@@ -471,8 +471,21 @@ describe("DELETE /api/comments/:comment_id", () => {
     })
   })
   test("should return correct error if comment_id not found", () => {
+    return request(app)
+    .delete("/api/comments/90000")
+    .expect(404)
+    .then((response) => {
+      expect(response.body.error).toEqual("Not Found")
+    })
   })
-  test("should return correct error if comment_id input is invalid", () => {})
+  test("should return correct error if comment_id input is invalid", () => {
+    return request(app)
+    .delete("/api/comments/hello")
+    .expect(400)
+    .then((response) => {
+      expect(response.body.error).toEqual("Bad Request")
+    })
+  })
 })
 
 

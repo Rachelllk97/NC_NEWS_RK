@@ -102,11 +102,12 @@
           "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg"
       }]
       }
-    }
-  
-  
-  
+    },
+    "DELETE /api/comments/:comment_id":{
+      "description": "delete the given comment by comment_id",
+      "queries": ["comment_id"],
+      "exampleResponse": {}
   }
-
+}
 
 
