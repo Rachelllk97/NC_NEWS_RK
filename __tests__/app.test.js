@@ -345,11 +345,11 @@ describe("GET /api/articles/:article_id/comments", () => {
   .get("/api/articles/9000/comments")
   .expect(404)
   .then((response) => {
-  expect(response.body.error).toBe("Not Found");
+  expect(response.body.error).toBe("No article associated with this id number");
   })
   })
-  //*** this test is not passing
-  test.skip("should return 200 when ID is valid but it has no comments", () => {
+
+  test("should return 200 when ID is valid but it has no comments", () => {
     return request(app)
     .get("/api/articles/4/comments")
     .expect(200)

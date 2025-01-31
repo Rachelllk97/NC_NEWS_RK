@@ -1,8 +1,12 @@
+const { fetchArticleById } = require("../models/articles.models")
 const {fetchComments, addComment, fetchDelete} = require("../models/comments.models")
 
 const getComments = (req, res, next) => {
     const {article_id} = req.params
-    fetchComments(article_id)
+    fetchArticleById(article_id)
+    .then(() => {
+        return fetchComments(article_id)
+    })
     .then((comments) => {
         res.status(200).send({comments})
     })
