@@ -342,14 +342,14 @@ describe("GET /api/articles/:article_id/comments", () => {
   })
   test("should throw correct error if article_id does not exist", () => {
   return request(app)
-  .get("/api/articles/20/comments")
+  .get("/api/articles/9000/comments")
   .expect(404)
   .then((response) => {
-  expect(response.body.error).toBe("No comments associated with this id number");
+  expect(response.body.error).toBe("Not Found");
   })
   })
-  //*** this test is not passing, i am pushing branch 8 so that i can switch back to this one and fix it ****
-  test.skip("should return 200 when ID is valid but it has no comments", () => {
+  //*** this test is not passing
+  test.only("should return 200 when ID is valid but it has no comments", () => {
     return request(app)
     .get("/api/articles/4/comments")
     .expect(200)
@@ -476,7 +476,6 @@ describe("DELETE /api/comments/:comment_id", () => {
 })
 
 
-//ADD THIS TO ENDPOINTS FILE
 describe("GET /api/users", () => {
   test("should return an array of user objects with the correct properties", () => {
     return request(app)
