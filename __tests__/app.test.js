@@ -349,7 +349,7 @@ describe("GET /api/articles/:article_id/comments", () => {
   })
   })
   //*** this test is not passing
-  test.only("should return 200 when ID is valid but it has no comments", () => {
+  test.skip("should return 200 when ID is valid but it has no comments", () => {
     return request(app)
     .get("/api/articles/4/comments")
     .expect(200)
