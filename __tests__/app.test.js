@@ -360,8 +360,7 @@ describe("GET /api/articles/:article_id/comments", () => {
 })
 
 describe("POST /api/articles/:article_id/comments", () => {
-  //updated
-  test.only("should add a comment for an article and return the post", () => {
+  test("should add a comment for an article and return the post", () => {
     const newComment = {
       body: "this is a comment",
       username: "butter_bridge"
@@ -421,7 +420,7 @@ describe("PATCH /api/articles/:article_id", () => {
   test("should update the votes property correctly when given a valid aticle_id", () => {
     const newVote = { inc_votes: 1}
     return request(app)
-    .put("/api/articles/1")
+    .patch("/api/articles/1")
     .send(newVote)
     .expect(200)
     .then(({body : article}) => {
@@ -438,9 +437,27 @@ describe("PATCH /api/articles/:article_id", () => {
       })
     })
   })
+test("should return correct error if article_id does not exist", () => {
+  const newVote = { inc_votes: 1}
+    return request(app)
+    .patch("/api/articles/9000")
+    .send(newVote)
+    .expect(404)
+    .then((response) => 
+      expect(response.body.error).toEqual("Not Found")
+  )
+  })
+test("should return correct error if invalid input entered for article_id", ()=> {
+  const newVote = { inc_votes: 1}
+  return request(app)
+  .patch("/api/articles/hello")
+  .send(newVote)
+  .expect(400)
+  .then((response) => 
+    expect(response.body.error).toEqual("Bad Request")
+)
 })
-test("should return correct error if article_id does not exist", () => {})
-test("should return correct error if invalid input entered for article_id", ()=> {})
+})
 
 
 describe("DELETE /api/comments/:comment_id", () => {
@@ -452,13 +469,14 @@ describe("DELETE /api/comments/:comment_id", () => {
       expect(response.body).toEqual({})
     })
   })
-  test("should return correct error if comment_id not found", () => {})
+  test("should return correct error if comment_id not found", () => {
+  })
   test("should return correct error if comment_id input is invalid", () => {})
 })
 
 
 //ADD THIS TO ENDPOINTS FILE
-describe("CORE /api/users", () => {
+describe("GET /api/users", () => {
   test("should return an array of user objects with the correct properties", () => {
     return request(app)
     .get("/api/users")
