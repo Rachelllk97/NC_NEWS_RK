@@ -348,7 +348,7 @@ describe("GET /api/articles/:article_id/comments", () => {
   expect(response.body.error).toBe("No comments associated with this id number");
   })
   })
-  //*** work on this test****
+  //*** this test is not passing, i am pushing branch 8 so that i can switch back to this one and fix it ****
   test.skip("should return 200 when ID is valid but it has no comments", () => {
     return request(app)
     .get("/api/articles/4/comments")
