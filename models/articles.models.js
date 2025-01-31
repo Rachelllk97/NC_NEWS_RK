@@ -36,6 +36,9 @@ const updateVotes = (article_id, inc_votes) => {
      RETURNING *;`
     return db.query(query, [inc_votes, article_id])
     .then(({rows}) => {
+            if (rows.length === 0) {
+              return Promise.reject({ status: 404, msg: "Not Found"});
+            }
         return rows[0]
 })
 }

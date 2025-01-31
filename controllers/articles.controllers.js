@@ -24,7 +24,7 @@ const getArticles = (req, res, next) => {
     })
 }
 
-const putVotes = (req, res, next) => {
+const patchVotes = (req, res, next) => {
     const {article_id} = req.params
     const {inc_votes} = req.body
 
@@ -39,4 +39,4 @@ const putVotes = (req, res, next) => {
 
 
 
-module.exports = {getArticleByID, getArticles, putVotes}
+module.exports = {getArticleByID, getArticles, patchVotes}
