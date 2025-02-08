@@ -4,6 +4,7 @@ const request = require("supertest");
 const db = require("../db/connection.js");
 const seed = require("../db/seeds/seed.js")
 const testData = require("../db/data/test-data/index.js")
+const jestSorted = require("jest-sorted")
 
 
 beforeEach(() => {
@@ -506,9 +507,39 @@ describe("GET /api/users", () => {
   })
 })
 
-// describe("GET /api/articles (sorting queries)", () =>{
-//   test("should return articles in desc order by default", () => {
-//     return
-//   })
-// })
+describe("GET /api/articles (sorting queries)", () =>{
+  test("should sort articles by votes in ascending order", () => {
+    return request(app)
+    .get('/api/articles?sort_by=votes&order=asc')
+    .expect(200)
+    .then(({body}) =>{
+      expect(body.articles).toBeSortedBy("votes", {ascending : true})
+    })
+  })
+  test("should return correct error for invalid sort_by column", ()=> {
+    return request(app)
+    .get("/api/articles?sort_by=hello")
+    .expect(400)
+    .then(({body}) => {
+      expect(body.error).toEqual("Bad Request: Invalid sort_by column")
+    })
+  })
+  test("should return correct error for invalid order value", () => {
+    return request(app)
+    .get("/api/articles?order=hello")
+    .expect(400)
+    .then(({body}) => {
+    expect(body.error).toEqual("Bad Request: Invalid order value")
+  })
+})
+  test("should return articles sorted by author in ascending order", () => {
+  //   return request(app)
+  //     .get("/api/articles?sort_by=author&order=asc")
+  //     .expect(200)
+  //     .then(({ body }) => {
+  //         })
+        })
+      });
+
+
 
