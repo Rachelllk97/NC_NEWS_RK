@@ -1,5 +1,5 @@
 const {fetchArticleById, fetchArticles, updateVotes} = require("../models/articles.models")
-const { modifyArticles } = require("../utils")
+const { modifyArticles, buildSortQuery} = require("../utils")
 
 const getArticleByID = (req, res, next) => {
     const {article_id} = req.params
@@ -14,15 +14,24 @@ const getArticleByID = (req, res, next) => {
 }
 
 const getArticles = (req, res, next) => {
-    fetchArticles()
-    .then((articles) => {
-        const modifiedArticles = modifyArticles(articles)
-        res.status(200).send({articles: modifiedArticles})
-    })
-    .catch((err) => {
-        next(err)
-    })
-}
+    const { sort_by = "created_at", order = "desc" } = req.query;
+  
+    try {
+      const sortQuery = buildSortQuery(sort_by, order);
+  
+      fetchArticles(sort_by, order)
+        .then((articles) => {
+          const modifiedArticles = modifyArticles(articles, sort_by, order);
+          res.status(200).send({ articles: modifiedArticles });
+        })
+        .catch((err) => {
+          next(err);
+        });
+    } catch (err) {
+      next(err);
+    }
+  };
+
 
 const patchVotes = (req, res, next) => {
     const {article_id} = req.params
@@ -36,7 +45,6 @@ const patchVotes = (req, res, next) => {
         next(err)
     })
 }
-
 
 
 module.exports = {getArticleByID, getArticles, patchVotes}

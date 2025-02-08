@@ -29,6 +29,7 @@ app.delete("/api/comments/:comment_id", deleteComment)
 
 app.get("/api/users", getUsers)
 
+
 app.all("*", (req, res) => {
     res.status(404).send({error: "Endpoint not found"})
 })
@@ -45,12 +46,11 @@ app.use((err, req, res, next) => {
     }
   });
   
-  app.use((err, req, res, next) => {
+  app.use((err, req, res, next) => { 
     if (err.status && err.msg) {
-      res.status(err.status).send({error:err.msg})
-    } else {
-      next(err);
+      return res.status(err.status).send({ error: err.msg });
     }
+    next(err); 
   });
   
   app.use((err, req, res, next) => {

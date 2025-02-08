@@ -1,4 +1,5 @@
 const db = require("../db/connection")
+const {buildSortQuery} = require("../utils")
 
 
 const fetchArticleById = (article_id) => {
@@ -16,17 +17,24 @@ const fetchArticleById = (article_id) => {
     })
 }
 
-const fetchArticles = () => {
+const fetchArticles = (sort_by, order) => {
+
+    const sortQuery = buildSortQuery(sort_by, order);
+
     const query = `
         SELECT articles.article_id, articles.title, articles.topic, articles.author, articles.created_at, articles.votes, articles.article_img_url,
         COUNT(comments.comment_id) AS comment_count
         FROM articles
         LEFT JOIN comments ON articles.article_id = comments.article_id
         GROUP BY articles.article_id   
+         ${sortQuery};
         `
-    return db.query(query)
-    .then(({rows}) => rows)
+return db.query(query)
+        .then(({ rows }) => {
+            return rows;
+    } )
 }
+
 
 const updateVotes = (article_id, inc_votes) => {
     const query = 
