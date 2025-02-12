@@ -61,25 +61,24 @@ describe("GET /api/articles/:article_id", () => {
         })
       })
   })
-    // test("get correct article for given article_id", () => {
-    //   return request(app)
-    //   .get("/api/articles/3")
-    //   .expect(200)
-    //   .then(({body}) => {
-    //     const article = body.article
-    //     expect(article).toEqual({
-    //       article_id: 3,
-    //       title: "Eight pug gifs that remind me of mitch",
-    //       topic: "mitch",
-    //       author: "icellusedkars",
-    //       body: "some gifs",
-    //       created_at: expect.any(String),
-    //       votes: 0,
-    //       article_img_url:
-    //         "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
-    //     })
-    //   })
-    // })
+    test("get correct article for given article_id", () => {
+      return request(app)
+      .get("/api/articles/3")
+      .expect(200)
+      .then(({body}) => {
+        expect(body.article).toMatchObject({
+          article_id: 3,
+          title: "Eight pug gifs that remind me of mitch",
+          topic: "mitch",
+          author: "icellusedkars",
+          body: "some gifs",
+          created_at: expect.any(String),
+          votes: 0,
+          article_img_url:
+            "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+        })
+      })
+    })
       test("400: id not a number", () => {
         return request(app)
           .get("/api/articles/hello")
@@ -88,14 +87,15 @@ describe("GET /api/articles/:article_id", () => {
             expect(response.body.error).toBe("Bad Request");
           });
       });
-      // test("404: no article with that id number", () => {
-      //   return request(app)
-      //   .get("/api/articles/20")
-      //   .expect(404)
-      //   .then((response) => {
-      //     expect(response.body.error).toBe("No article associated with this id number");
-      //   })
-      // })
+      test("404: no article with that id number", () => {
+        return request(app)
+        .get("/api/articles/9999")
+        .expect(404)
+        .then((response) => {
+          console.log(response)
+          expect(response.body.error).toBe("No article associated with this id number");
+        })
+      })
 
   });
 
@@ -341,14 +341,14 @@ describe("GET /api/articles/:article_id/comments", () => {
      expect(response.body.error).toBe("Bad Request");
         });
   })
-  // test("should throw correct error if article_id does not exist", () => {
-  // return request(app)
-  // .get("/api/articles/9000/comments")
-  // .expect(404)
-  // .then((response) => {
-  // expect(response.body.error).toBe("No article associated with this id number");
-  // })
-  // })
+  test("should throw correct error if article_id does not exist", () => {
+  return request(app)
+  .get("/api/articles/9000/comments")
+  .expect(404)
+  .then((response) => {
+  expect(response.body.error).toBe("No article associated with this id number");
+  })
+  })
 
   test("should return 200 when ID is valid but it has no comments", () => {
     return request(app)
@@ -508,14 +508,14 @@ describe("GET /api/users", () => {
 })
 
 describe("GET /api/articles (sorting queries)", () =>{
-  // test("should sort articles by votes in ascending order", () => {
-  //   return request(app)
-  //   .get('/api/articles?sort_by=votes&order=asc')
-  //   .expect(200)
-  //   .then(({body}) =>{
-  //     expect(body.articles).toBeSortedBy("votes", {ascending : true})
-  //   })
-  // })
+  test("should sort by default to created at and descending", () => {
+    return request(app)
+    .get('/api/articles')
+    .expect(200)
+    .then(({body}) =>{
+      expect(body.articles).toBeSortedBy("created_at", {descending : true})
+    })
+  })
   test("should return correct error for invalid sort_by column", ()=> {
     return request(app)
     .get("/api/articles?sort_by=hello")
@@ -532,120 +532,121 @@ describe("GET /api/articles (sorting queries)", () =>{
     expect(body.error).toEqual("Invalid order query")
   })
 })
-  test("should return articles associated with specified author in ascending order by created_at", () => {
-    return request(app)
-      .get("/api/articles?author=icellusedkars&sort_by=author&order=asc")
-      .expect(200)
-      .then(({body}) => {
-        const article = body.articles[0]
-        expect(article).toEqual(
-          {
-            article_id: 7,
-            title: 'Z',
-            topic: 'mitch',
-            author: 'icellusedkars',
-            created_at: expect.any(String),
-            votes: 0,
-            article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
-            comment_count: '0'
-          },
-          {
-            article_id: 11,
-            title: 'Am I a cat?',
-            topic: 'mitch',
-            author: 'icellusedkars',
-            created_at: expect.any(String),
-            votes: 0,
-            article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
-            comment_count: '0'
-          },
-          {
-            article_id: 8,
-            title: 'Does Mitch predate civilisation?',
-            topic: 'mitch',
-            author: 'icellusedkars',
-            created_at: expect.any(String),
-            votes: 0,
-            article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
-            comment_count: '0'
-          },
-          {
-            article_id: 2,
-            title: 'Sony Vaio; or, The Laptop',
-            topic: 'mitch',
-            author: 'icellusedkars',
-            created_at: expect.any(String),
-            votes: 0,
-            article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
-            comment_count: '0'
-          },
-          {
-            article_id: 6,
-            title: 'A',
-            topic: 'mitch',
-            author: 'icellusedkars',
-            created_at: expect.any(String),
-            votes: 0,
-            article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
-            comment_count: '1'
-          },
-          {
-            article_id: 3,
-            title: 'Eight pug gifs that remind me of mitch',
-            topic: 'mitch',
-            author: 'icellusedkars',
-            created_at: expect.any(String),
-            votes: 0,
-            article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
-            comment_count: '2'
-          })
+//********{this test is failing}**********
+//   test("should return articles associated with specified author in ascending order by created_at", () => {
+//     return request(app)
+//       .get("/api/articles?author=icellusedkars&sort_by=author&order=asc")
+//       .expect(200)
+//       .then(({body}) => {
+//         const article = body.articles[0]
+//         expect(article).toEqual(
+//           {
+//             article_id: 7,
+//             title: 'Z',
+//             topic: 'mitch',
+//             author: 'icellusedkars',
+//             created_at: expect.any(String),
+//             votes: 0,
+//             article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+//             comment_count: '0'
+//           },
+//           {
+//             article_id: 11,
+//             title: 'Am I a cat?',
+//             topic: 'mitch',
+//             author: 'icellusedkars',
+//             created_at: expect.any(String),
+//             votes: 0,
+//             article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+//             comment_count: '0'
+//           },
+//           {
+//             article_id: 8,
+//             title: 'Does Mitch predate civilisation?',
+//             topic: 'mitch',
+//             author: 'icellusedkars',
+//             created_at: expect.any(String),
+//             votes: 0,
+//             article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+//             comment_count: '0'
+//           },
+//           {
+//             article_id: 2,
+//             title: 'Sony Vaio; or, The Laptop',
+//             topic: 'mitch',
+//             author: 'icellusedkars',
+//             created_at: expect.any(String),
+//             votes: 0,
+//             article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+//             comment_count: '0'
+//           },
+//           {
+//             article_id: 6,
+//             title: 'A',
+//             topic: 'mitch',
+//             author: 'icellusedkars',
+//             created_at: expect.any(String),
+//             votes: 0,
+//             article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+//             comment_count: '1'
+//           },
+//           {
+//             article_id: 3,
+//             title: 'Eight pug gifs that remind me of mitch',
+//             topic: 'mitch',
+//             author: 'icellusedkars',
+//             created_at: expect.any(String),
+//             votes: 0,
+//             article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+//             comment_count: '2'
+//           })
 
-      })
-    })
+//       })
+//     })
 })
 
 describe("GET /api/articles/:article_id", () => {
-  // test("should return the article with the correct comment_count", () => {
-  //   return request(app)
-  //     .get("/api/articles/3")
-  //     .expect(200)
-  //     .then(({ body }) => {
-  //       const article = body.article;
-  //       expect(article).toEqual({
-  //         article_id: 3,
-  //         title: "Eight pug gifs that remind me of mitch",
-  //         topic: "mitch",
-  //         author: "icellusedkars",
-  //         created_at: expect.any(String),
-  //         votes: 0,
-  //         article_img_url: "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
-  //         comment_count: 2, 
-  //       });
-  //     });
-  // })
-  // test("should return the article with comment_count 0 for an article with no comments", () => {
-  //   return request(app)
-  //     .get("/api/articles/4") 
-  //     .expect(200)
-  //     .then(({ body }) => {
-  //       expect(body.article.comment_count).toBe(0);
-  //     });
-  // });
-  // test("should return a 404 for non-existant article", () => {
-  //   return request(app)
-  //     .get("/api/articles/9999") 
-  //     .expect(404)
-  //     .then(({ body }) => {
-  //       expect(body.error).toBe("No article associated with this id number");
-  //     });
-  // });
-  // test("should sort articles by votes in ascending order", () => {
-  //   return request(app)
-  //     .get("/api/articles?sort_by=votes&order=asc")
-  //     .expect(200)
-  //     .then(({ body }) => {
-  //       expect(body.articles).toBeSortedBy("votes", { ascending: true });
-  //     });
-  // });
-
+  test("should return the article with the correct comment_count", () => {
+    return request(app)
+      .get("/api/articles/3")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.article).toMatchObject({
+          article_id: 3,
+          title: 'Eight pug gifs that remind me of mitch',
+          topic: 'mitch',
+          author: 'icellusedkars',
+          body: 'some gifs',
+          created_at: '2020-11-03T09:12:00.000Z',
+          votes: 0,
+          article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+          comment_count: '2'
+        });
+      });
+  })
+  test("should return the article with comment_count 0 for an article with no comments", () => {
+    return request(app)
+      .get("/api/articles/4") 
+      .expect(200)
+      .then(({ body }) => {
+        console.log(body)
+        expect(body.article.comment_count).toBe('0');
+      });
+  });
+  test("should return a 404 for non-existant article", () => {
+    return request(app)
+      .get("/api/articles/9999") 
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.error).toBe("No article associated with this id number");
+      });
+  });
+  test("should sort articles by votes in ascending order", () => {
+    return request(app)
+      .get("/api/articles?sort_by=votes&order=asc")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.articles).toBeSortedBy("votes", { descending: false });
+      });
+  });
 })

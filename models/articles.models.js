@@ -14,12 +14,12 @@ const fetchArticleById = (article_id) => {
     )
     .then(({ rows }) => {
         const article = rows[0];
-        // if (!article) {
-        //     return Promise.reject({
-        //         status: 404,
-        //         msg: "No article associated with this id number",
-        //     });
-        // }
+        if (!article) {
+            return Promise.reject({
+                status: 404,
+                msg: "No article associated with this id number",
+            });
+        }
         return article;
 
     });
@@ -27,7 +27,7 @@ const fetchArticleById = (article_id) => {
 
 
 const fetchArticles = (sort_by, order, author, topic) => {
-    const sortQuery = buildSortQuery(sort_by, order);  
+    // const sortQuery = buildSortQuery(sort_by, order);  
     
     let query = `
       SELECT articles.article_id, articles.title, articles.topic, articles.author, articles.created_at, articles.votes, articles.article_img_url,
@@ -35,6 +35,7 @@ const fetchArticles = (sort_by, order, author, topic) => {
       FROM articles
       LEFT JOIN comments ON articles.article_id = comments.article_id
     `;
+ 
     
     const queryValues = [];
   
@@ -53,8 +54,10 @@ const fetchArticles = (sort_by, order, author, topic) => {
       }
     }
   
-    query += ` GROUP BY articles.article_id ${sortQuery};`;
+    query += ` GROUP BY articles.article_id
+    ORDER BY articles.${sort_by} ${order}`;
     
+    console.log(query)
     return db.query(query, queryValues)
       .then(({ rows }) => {
         console.log(rows)
